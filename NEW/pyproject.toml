@@ -1,0 +1,8 @@
+[project]
+name = "churn-management-system"
+version = "0.1.0"
+description = "End-to-end churn prediction with SHAP, profit optimization, recommendations, and drift monitoring."
+requires-python = ">=3.10"
+
+[tool.ruff]
+line-length = 100

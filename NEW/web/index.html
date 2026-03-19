@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Churn Management System</title>
+
+    <!-- Tailwind (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              ui: ["ui-sans-serif", "system-ui", "Segoe UI", "Roboto", "Arial", "sans-serif"],
+            },
+            boxShadow: {
+              glow: "0 0 0 1px rgba(255,255,255,0.08), 0 10px 30px rgba(0,0,0,0.45)",
+            },
+          },
+        },
+      };
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      body {
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      }
+      .grid-bg {
+        background-image:
+          radial-gradient(900px 600px at 10% 0%, rgba(99,102,241,0.22), transparent 55%),
+          radial-gradient(800px 600px at 95% 20%, rgba(16,185,129,0.18), transparent 55%),
+          radial-gradient(700px 520px at 60% 85%, rgba(236,72,153,0.16), transparent 55%),
+          linear-gradient(to bottom, rgba(255,255,255,0.05), transparent 35%),
+          linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+        background-size:
+          auto,
+          auto,
+          auto,
+          auto,
+          56px 56px,
+          56px 56px;
+        background-position:
+          0 0,
+          0 0,
+          0 0,
+          0 0,
+          -1px -1px,
+          -1px -1px;
+      }
+      .glass {
+        background: rgba(15, 23, 42, 0.55);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .mono {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-slate-950 text-slate-100 grid-bg">
+    <div class="mx-auto max-w-7xl px-4 py-8">
+      <header class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div>
+          <div class="inline-flex items-center gap-2 rounded-full glass px-3 py-1 shadow-glow">
+            <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+            <span class="text-xs text-slate-200/90">Live API UI</span>
+            <span id="apiStatus" class="text-xs text-slate-200/60 mono">checking…</span>
+          </div>
+          <h1 class="mt-3 text-3xl font-semibold tracking-tight">Churn Management System</h1>
+          <p class="mt-1 text-slate-300/80">
+            Predict churn risk, maximize profit with an optimal threshold, explain decisions with SHAP, and suggest retention actions.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button
+            id="btnDemo"
+            class="rounded-xl bg-indigo-500/90 px-4 py-2 text-sm font-medium hover:bg-indigo-500 transition shadow-glow"
+          >
+            Load demo customer
+          </button>
+          <button
+            id="btnPredict"
+            class="rounded-xl bg-emerald-500/90 px-4 py-2 text-sm font-medium hover:bg-emerald-500 transition shadow-glow"
+          >
+            Predict churn
+          </button>
+        </div>
+      </header>
+
+      <main class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <!-- Left: form -->
+        <section class="glass rounded-2xl p-5 shadow-glow lg:col-span-5">
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold">Customer features</h2>
+            <span class="text-xs text-slate-300/70">All fields optional (except customer_id)</span>
+          </div>
+
+          <div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
+            <label class="block">
+              <span class="text-xs text-slate-300/80">Customer ID</span>
+              <input id="customer_id" class="mt-1 w-full rounded-xl bg-slate-900/60 px-3 py-2 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-indigo-400/60" value="C000001" />
+            </label>
+
+            <label class="block">
+              <span class="text-xs text-slate-300/80">Age</span>
+              <input id="age" type="number" class="mt-1 w-full rounded-xl bg-slate-900/60 px-3 py-2 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-indigo-400/60" placeholder="e.g. 34" />
+            </label>
+
+            <label class="block">
+              <span class="text-xs text-slate-300/80">Tenure (months)</span>
+              <input id="tenure_months" type="number" class="mt-1 w-full rounded-xl bg-slate-900/60 px-3 py-2 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-indigo-400/60" placeholder="e.g. 12" />
+            </label>
+
+            <label class="block">
+              <span class="text-xs text-slate-300/80">Monthly charges</span>
+              <input id="monthly_charges" type="number" step="0.01" class="mt-1 w-full rounded-xl bg-slate-900/60 px-3 py-2 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-indigo-400/60" placeholder="e.g. 79.99" />
+            </label>
+
+            <label class="block">
+              <span class="text-xs text-slate-300/80">Total charges</span>
+              <input id="total_charges" type="number" step="0.01" class="mt-1 w-full rounded-xl bg-slate-900/60 px-3 py-2 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-indigo-400/60" placeholder="e.g. 1150.00" />
+            </label>
+
+            <label class="block">
+              <span class="text-xs text-slate-300/80">Avg monthly GB</span>
+              <input id="avg_monthly_gb" type="number" step="0.01" class="mt-1 w-full rounded-xl bg-slate-900/60 px-3 py-2 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-indigo-400/60" placeholder="e.g. 45" />
+            </label>
+
+            <label class="block">
+              <span class="text-xs text-slate-300/80">Support tickets (6m)</span>
+              <input id="support_tickets_6m" type="number" class="mt-1 w-full rounded-xl bg-slate-900/60 px-3 py-2 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-indigo-400/60" placeholder="e.g. 2" />
+            </label>
+
+            <label class="block">
+              <span class="text-xs text-slate-300/80">Outages (3m)</span>
+              <input id="outages_3m" type="number" class="mt-1 w-full rounded-xl bg-slate-900/60 px-3 py-2 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-indigo-400/60" placeholder="e.g. 1" />
+            </label>
+
+            <label class="block">
+              <span class="text-xs text-slate-300/80">Late payments (12m)</span>
+              <input id="late_payments_12m" type="number" class="mt-1 w-full rounded-xl bg-slate-900/60 px-3 py-2 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-indigo-400/60" placeholder="e.g. 3" />
+            </label>
+
+            <label class="block">
+              <span class="text-xs text-slate-300/80">App sessions (30d)</span>
+              <input id="app_sessions_30d" type="number" class="mt-1 w-full rounded-xl bg-slate-900/60 px-3 py-2 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-indigo-400/60" placeholder="e.g. 10" />
+            </label>
+
+            <label class="block">
+              <span class="text-xs text-slate-300/80">Add-ons</span>
+              <input id="add_ons" type="number" class="mt-1 w-full rounded-xl bg-slate-900/60 px-3 py-2 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-indigo-400/60" placeholder="e.g. 2" />
+            </label>
+
+            <label class="block">
+              <span class="text-xs text-slate-300/80">Contract type</span>
+              <select id="contract_type" class="mt-1 w-full rounded-xl bg-slate-900/60 px-3 py-2 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-indigo-400/60">
+                <option value="">(unknown)</option>
+                <option>month-to-month</option>
+                <option>one-year</option>
+                <option>two-year</option>
+              </select>
+            </label>
+
+            <label class="block">
+              <span class="text-xs text-slate-300/80">Payment method</span>
+              <select id="payment_method" class="mt-1 w-full rounded-xl bg-slate-900/60 px-3 py-2 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-indigo-400/60">
+                <option value="">(unknown)</option>
+                <option>electronic-check</option>
+                <option>mailed-check</option>
+                <option>bank-transfer</option>
+                <option>credit-card</option>
+              </select>
+            </label>
+
+            <label class="block">
+              <span class="text-xs text-slate-300/80">Paperless billing</span>
+              <select id="paperless_billing" class="mt-1 w-full rounded-xl bg-slate-900/60 px-3 py-2 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-indigo-400/60">
+                <option value="">(unknown)</option>
+                <option>yes</option>
+                <option>no</option>
+              </select>
+            </label>
+
+            <label class="block">
+              <span class="text-xs text-slate-300/80">International plan</span>
+              <select id="international_plan" class="mt-1 w-full rounded-xl bg-slate-900/60 px-3 py-2 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-indigo-400/60">
+                <option value="">(unknown)</option>
+                <option>yes</option>
+                <option>no</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="mt-5 grid grid-cols-1 gap-3 md:grid-cols-3">
+            <label class="block">
+              <span class="text-xs text-slate-300/80">Retention gain</span>
+              <input id="retention_gain" type="number" step="0.01" class="mt-1 w-full rounded-xl bg-slate-900/60 px-3 py-2 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-emerald-400/60" value="120" />
+            </label>
+            <label class="block">
+              <span class="text-xs text-slate-300/80">Retention cost</span>
+              <input id="retention_cost" type="number" step="0.01" class="mt-1 w-full rounded-xl bg-slate-900/60 px-3 py-2 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-emerald-400/60" value="20" />
+            </label>
+            <label class="block">
+              <span class="text-xs text-slate-300/80">Threshold (optional)</span>
+              <input id="threshold" type="number" step="0.001" class="mt-1 w-full rounded-xl bg-slate-900/60 px-3 py-2 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-emerald-400/60" placeholder="auto" />
+            </label>
+          </div>
+
+          <div class="mt-4 flex items-center justify-between">
+            <label class="inline-flex items-center gap-2 text-sm text-slate-300/80">
+              <input id="include_shap" type="checkbox" class="h-4 w-4 rounded border-white/10 bg-slate-900/60" checked />
+              Include SHAP
+            </label>
+            <label class="inline-flex items-center gap-2 text-sm text-slate-300/80">
+              <input id="include_recommendations" type="checkbox" class="h-4 w-4 rounded border-white/10 bg-slate-900/60" checked />
+              Include recommendations
+            </label>
+          </div>
+
+          <div class="mt-5 rounded-xl bg-slate-900/40 p-3 ring-1 ring-white/10">
+            <div class="text-xs text-slate-300/70">Request preview</div>
+            <pre id="requestPreview" class="mt-2 max-h-56 overflow-auto text-xs text-slate-200/90 mono"></pre>
+          </div>
+        </section>
+
+        <!-- Right: results -->
+        <section class="lg:col-span-7 space-y-6">
+          <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div class="glass rounded-2xl p-5 shadow-glow">
+              <div class="text-xs text-slate-300/70">Churn probability</div>
+              <div id="kpiProba" class="mt-2 text-3xl font-semibold">—</div>
+              <div id="kpiProbaMeta" class="mt-1 text-xs text-slate-300/60 mono">—</div>
+            </div>
+            <div class="glass rounded-2xl p-5 shadow-glow">
+              <div class="text-xs text-slate-300/70">Decision</div>
+              <div id="kpiDecision" class="mt-2 text-3xl font-semibold">—</div>
+              <div id="kpiDecisionMeta" class="mt-1 text-xs text-slate-300/60 mono">—</div>
+            </div>
+            <div class="glass rounded-2xl p-5 shadow-glow">
+              <div class="text-xs text-slate-300/70">Threshold</div>
+              <div id="kpiThreshold" class="mt-2 text-3xl font-semibold">—</div>
+              <div class="mt-1 text-xs text-slate-300/60">Auto from profit optimization (unless you override)</div>
+            </div>
+          </div>
+
+          <div class="glass rounded-2xl p-5 shadow-glow">
+            <div class="flex items-center justify-between gap-3">
+              <h2 class="text-lg font-semibold">What to do (recommendations)</h2>
+              <span id="recCount" class="text-xs text-slate-300/60 mono">—</span>
+            </div>
+            <div id="recs" class="mt-4 grid grid-cols-1 gap-3"></div>
+          </div>
+
+          <div class="glass rounded-2xl p-5 shadow-glow">
+            <div class="flex items-center justify-between gap-3">
+              <h2 class="text-lg font-semibold">Why (top SHAP drivers)</h2>
+              <span class="text-xs text-slate-300/60">Local explanation for this customer</span>
+            </div>
+            <div id="shapTable" class="mt-4 overflow-hidden rounded-xl ring-1 ring-white/10"></div>
+          </div>
+
+          <div class="glass rounded-2xl p-5 shadow-glow">
+            <div class="text-xs text-slate-300/70">Raw response</div>
+            <pre id="rawResponse" class="mt-2 max-h-72 overflow-auto rounded-xl bg-slate-900/40 p-3 text-xs text-slate-200/90 ring-1 ring-white/10 mono"></pre>
+          </div>
+        </section>
+      </main>
+
+      <footer class="mt-10 text-xs text-slate-400/70">
+        Built with FastAPI + XGBoost + SHAP • UI is a static HTML app calling <span class="mono">/predict</span>.
+      </footer>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
+
