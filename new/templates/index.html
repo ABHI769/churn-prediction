@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Churn Prediction</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        input[type=range] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 2px solid #18181b;
+            cursor: pointer;
+            margin-top: -6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.15s ease;
+        }
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #e4e4e7;
+            border-radius: 99px;
+        }
+        input[type=range]:focus::-webkit-slider-thumb {
+            outline: 2px solid rgba(24, 24, 27, 0.1);
+            outline-offset: 2px;
+        }
+        
+        /* Progress bar width utilities */
+        .progress-41-8 { width: 41.8%; }
+        .progress-18-7 { width: 18.7%; }
+        .progress-15-2 { width: 15.2%; }
+        .progress-7-4 { width: 7.4%; }
+        .progress-42-7 { width: 42.7%; }
+        .progress-11-3 { width: 11.3%; }
+        .progress-2-8 { width: 2.8%; }
+        
+        /* Hide scrollbar for clean internal scrolling if needed */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4d4d8;
+            border-radius: 4px;
+        }
+        
+        /* Colorful Background Elements */
+        .colorful-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .colorful-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .colorful-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .colorful-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .colorful-button:hover::before {
+            left: 100%;
+        }
+        
+        .risk-critical {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 50%, #ffa8a8 100%);
+            border-color: #ff6b6b;
+        }
+        
+        .risk-elevated {
+            background: linear-gradient(135deg, #ffd93d 0%, #ffed4e 50%, #fff59d 100%);
+            border-color: #ffd93d;
+        }
+        
+        .risk-healthy {
+            background: linear-gradient(135deg, #6bcf7f 0%, #8fe1a1 50%, #a8e6cf 100%);
+            border-color: #6bcf7f;
+        }
+        
+        .metric-card-colorful {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .metric-card-colorful::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+        }
+        
+        .metric-card-colorful:hover::before {
+            top: -100%;
+            left: -100%;
+        }
+        
+        .colorful-input {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(249,250,251,0.9) 100%);
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+        }
+        
+        .colorful-input::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: inherit;
+            padding: 2px;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            z-index: -1;
+        }
+        
+        .colorful-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .colorful-checkbox {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid #e9ecef;
+            position: relative;
+        }
+        
+        .colorful-checkbox.checked {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+        }
+        
+        .suggestion-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(249,250,251,0.95) 100%);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+        
+        .suggestion-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .suggestion-card.priority-critical {
+            border-left-color: #ff6b6b;
+            background: linear-gradient(135deg, rgba(255,107,107,0.05) 0%, rgba(255,255,255,0.95) 100%);
+        }
+        
+        .suggestion-card.priority-high {
+            border-left-color: #ffd93d;
+            background: linear-gradient(135deg, rgba(255,217,61,0.05) 0%, rgba(255,255,255,0.95) 100%);
+        }
+        
+        .suggestion-card.priority-medium {
+            border-left-color: #6bcf7f;
+            background: linear-gradient(135deg, rgba(107,207,127,0.05) 0%, rgba(255,255,255,0.95) 100%);
+        }
+        
+        .tab-active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .progress-bar-colorful {
+            background: linear-gradient(90deg, #e9ecef 0%, #f8f9fa 100%);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill-critical {
+            background: linear-gradient(90deg, #ff6b6b 0%, #ff8e8e 100%);
+        }
+        
+        .progress-fill-warning {
+            background: linear-gradient(90deg, #ffd93d 0%, #ffed4e 100%);
+        }
+        
+        .progress-fill-success {
+            background: linear-gradient(90deg, #6bcf7f 0%, #8fe1a1 100%);
+        }
+    </style>
+</head>
+<body class="bg-[#fafafa] text-zinc-900 font-[Inter] antialiased selection:bg-zinc-200 selection:text-zinc-900 min-h-screen p-4 md:p-8 relative overflow-x-hidden">
+
+    <!-- Subtle Background Elements for depth -->
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[50vh] bg-zinc-400/10 blur-[120px] rounded-full pointer-events-none"></div>
+    <div class="fixed inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMCwwLDAsMC4wMykiLz48L3N2Zz4=')] pointer-events-none mask-image:linear-gradient(to_bottom,white,transparent)"></div>
+
+    <div class="max-w-6xl mx-auto space-y-10 relative z-10">
+        
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
+            <div class="space-y-2">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-8 h-8 rounded-lg bg-zinc-900 flex items-center justify-center text-white shadow-md shadow-zinc-900/20 ring-1 ring-inset ring-zinc-900/50">
+                        <span class="tracking-tighter font-medium text-xs">CCP</span>
+                    </div>
+                    <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600 ring-1 ring-inset ring-zinc-200/50">v2.4.1</span>
+                </div>
+                <h1 class="text-3xl font-semibold tracking-tight text-zinc-900">Churn Prediction</h1>
+                <p class="text-sm text-zinc-500 max-w-md leading-relaxed">Analyze customer risk factors and discover actionable retention strategies using behavioral data.</p>
+            </div>
+            
+            <!-- Navigation Tabs -->
+            <nav class="flex p-1 bg-zinc-100/50 backdrop-blur-md border border-zinc-200/60 rounded-lg w-full md:w-auto shadow-sm">
+                <button class="nav-btn flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-1.5 text-sm font-medium rounded-md transition-all text-zinc-900 bg-white shadow-sm border border-zinc-200/50 ring-1 ring-black/5" data-target="prediction">
+                    <iconify-icon icon="solar:magic-stick-3-linear"></iconify-icon> Prediction
+                </button>
+                <button class="nav-btn flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-1.5 text-sm font-medium rounded-md transition-all text-zinc-500 hover:text-zinc-900 border border-transparent" data-target="analytics">
+                    <iconify-icon icon="solar:chart-square-linear"></iconify-icon> Analytics
+                </button>
+                <button class="nav-btn flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-1.5 text-sm font-medium rounded-md transition-all text-zinc-500 hover:text-zinc-900 border border-transparent" data-target="recommendations">
+                    <iconify-icon icon="solar:lightbulb-linear"></iconify-icon> Strategies
+                </button>
+            </nav>
+        </header>
+
+        <main class="relative">
+            
+            <!-- Prediction Tab -->
+            <section id="prediction" class="tab-panel space-y-6 animate-fade-in block">
+                <div class="bg-white/80 backdrop-blur-xl border border-zinc-200/80 rounded-2xl shadow-sm overflow-hidden ring-1 ring-inset ring-white">
+                    <div class="p-6 md:p-10">
+                        <form id="predictionForm" class="space-y-10">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
+                                
+                                <!-- Demographics -->
+                                <div class="space-y-6">
+                                    <div class="flex items-center gap-3 border-b border-zinc-100 pb-3">
+                                        <div class="w-6 h-6 rounded bg-zinc-100 flex items-center justify-center text-zinc-600">
+                                            <iconify-icon icon="solar:user-circle-linear"></iconify-icon>
+                                        </div>
+                                        <h3 class="text-sm font-semibold text-zinc-900 tracking-tight">Demographics</h3>
+                                    </div>
+                                    
+                                    <div class="space-y-1.5">
+                                        <label for="gender" class="text-xs font-medium text-zinc-600 ml-0.5">Gender</label>
+                                        <div class="relative group">
+                                            <select id="gender" name="gender" class="w-full appearance-none rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none hover:bg-zinc-50 focus:border-zinc-400 focus:bg-white focus:ring-4 focus:ring-zinc-100 transition-all cursor-pointer">
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                            </select>
+                                            <iconify-icon icon="solar:alt-arrow-down-linear" class="absolute right-3.5 top-3 text-zinc-400 pointer-events-none group-hover:text-zinc-600 transition-colors"></iconify-icon>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-3.5 pt-2">
+                                        <label class="flex items-start gap-3 cursor-pointer group">
+                                            <div class="relative flex items-center justify-center mt-0.5">
+                                                <input type="checkbox" id="senior" name="senior" class="peer sr-only">
+                                                <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
+                                                <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
+                                            </div>
+                                            <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Senior Citizen</span>
+                                        </label>
+                                        
+                                        <label class="flex items-start gap-3 cursor-pointer group">
+                                            <div class="relative flex items-center justify-center mt-0.5">
+                                                <input type="checkbox" id="partner" name="partner" class="peer sr-only">
+                                                <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
+                                                <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
+                                            </div>
+                                            <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Has Partner</span>
+                                        </label>
+
+                                        <label class="flex items-start gap-3 cursor-pointer group">
+                                            <div class="relative flex items-center justify-center mt-0.5">
+                                                <input type="checkbox" id="dependents" name="dependents" class="peer sr-only">
+                                                <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
+                                                <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
+                                            </div>
+                                            <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Has Dependents</span>
+                                        </label>
+                                    </div>
+
+                                    <div class="space-y-3 pt-4 border-t border-zinc-100">
+                                        <div class="flex justify-between items-end">
+                                            <label for="tenure" class="text-xs font-medium text-zinc-600 ml-0.5">Account Tenure</label>
+                                            <span id="tenureValue" class="text-xs font-semibold text-zinc-900 bg-zinc-100 px-2 py-0.5 rounded-md border border-zinc-200">12 mo</span>
+                                        </div>
+                                        <input type="range" id="tenure" name="tenure" min="1" max="72" value="12" class="w-full">
+                                    </div>
+                                </div>
+
+                                <!-- Services -->
+                                <div class="space-y-6">
+                                    <div class="flex items-center gap-3 border-b border-zinc-100 pb-3">
+                                        <div class="w-6 h-6 rounded bg-zinc-100 flex items-center justify-center text-zinc-600">
+                                            <iconify-icon icon="solar:server-square-linear"></iconify-icon>
+                                        </div>
+                                        <h3 class="text-sm font-semibold text-zinc-900 tracking-tight">Subscriptions</h3>
+                                    </div>
+                                    
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <div class="relative flex items-center justify-center mt-0.5">
+                                            <input type="checkbox" id="phone" name="phone" class="peer sr-only" checked>
+                                            <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
+                                            <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
+                                        </div>
+                                        <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Phone Service</span>
+                                    </label>
+
+                                    <div class="space-y-1.5">
+                                        <label for="multipleLines" class="text-xs font-medium text-zinc-600 ml-0.5">Multiple Lines</label>
+                                        <div class="relative group">
+                                            <select id="multipleLines" name="multipleLines" class="w-full appearance-none rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none hover:bg-zinc-50 focus:border-zinc-400 focus:bg-white focus:ring-4 focus:ring-zinc-100 transition-all cursor-pointer">
+                                                <option value="no">No</option>
+                                                <option value="yes">Yes</option>
+                                            </select>
+                                            <iconify-icon icon="solar:alt-arrow-down-linear" class="absolute right-3.5 top-3 text-zinc-400 pointer-events-none group-hover:text-zinc-600 transition-colors"></iconify-icon>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-1.5 pt-1">
+                                        <label for="internet" class="text-xs font-medium text-zinc-600 ml-0.5">Internet Service</label>
+                                        <div class="relative group">
+                                            <select id="internet" name="internet" class="w-full appearance-none rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none hover:bg-zinc-50 focus:border-zinc-400 focus:bg-white focus:ring-4 focus:ring-zinc-100 transition-all cursor-pointer">
+                                                <option value="no">None</option>
+                                                <option value="dsl">DSL</option>
+                                                <option value="fiber">Fiber Optic</option>
+                                            </select>
+                                            <iconify-icon icon="solar:alt-arrow-down-linear" class="absolute right-3.5 top-3 text-zinc-400 pointer-events-none group-hover:text-zinc-600 transition-colors"></iconify-icon>
+                                        </div>
+                                    </div>
+
+                                    <div id="additionalServices" class="hidden space-y-3.5 pt-4 border-t border-zinc-100">
+                                        <label class="flex items-start gap-3 cursor-pointer group">
+                                            <div class="relative flex items-center justify-center mt-0.5">
+                                                <input type="checkbox" id="onlineSecurity" name="onlineSecurity" class="peer sr-only">
+                                                <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
+                                                <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
+                                            </div>
+                                            <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Online Security</span>
+                                        </label>
+                                        <label class="flex items-start gap-3 cursor-pointer group">
+                                            <div class="relative flex items-center justify-center mt-0.5">
+                                                <input type="checkbox" id="onlineBackup" name="onlineBackup" class="peer sr-only">
+                                                <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
+                                                <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
+                                            </div>
+                                            <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Online Backup</span>
+                                        </label>
+                                        <label class="flex items-start gap-3 cursor-pointer group">
+                                            <div class="relative flex items-center justify-center mt-0.5">
+                                                <input type="checkbox" id="deviceProtection" name="deviceProtection" class="peer sr-only">
+                                                <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
+                                                <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
+                                            </div>
+                                            <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Device Protection</span>
+                                        </label>
+                                        <label class="flex items-start gap-3 cursor-pointer group">
+                                            <div class="relative flex items-center justify-center mt-0.5">
+                                                <input type="checkbox" id="techSupport" name="techSupport" class="peer sr-only">
+                                                <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
+                                                <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
+                                            </div>
+                                            <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Tech Support</span>
+                                        </label>
+                                        <label class="flex items-start gap-3 cursor-pointer group">
+                                            <div class="relative flex items-center justify-center mt-0.5">
+                                                <input type="checkbox" id="streamingTV" name="streamingTV" class="peer sr-only">
+                                                <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
+                                                <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
+                                            </div>
+                                            <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Streaming TV</span>
+                                        </label>
+                                        <label class="flex items-start gap-3 cursor-pointer group">
+                                            <div class="relative flex items-center justify-center mt-0.5">
+                                                <input type="checkbox" id="streamingMovies" name="streamingMovies" class="peer sr-only">
+                                                <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
+                                                <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
+                                            </div>
+                                            <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Streaming Movies</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Billing -->
+                                <div class="space-y-6">
+                                    <div class="flex items-center gap-3 border-b border-zinc-100 pb-3">
+                                        <div class="w-6 h-6 rounded bg-zinc-100 flex items-center justify-center text-zinc-600">
+                                            <iconify-icon icon="solar:card-linear"></iconify-icon>
+                                        </div>
+                                        <h3 class="text-sm font-semibold text-zinc-900 tracking-tight">Billing details</h3>
+                                    </div>
+                                    
+                                    <div class="space-y-1.5">
+                                        <label for="contract" class="text-xs font-medium text-zinc-600 ml-0.5">Contract Type</label>
+                                        <div class="relative group">
+                                            <select id="contract" name="contract" class="w-full appearance-none rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none hover:bg-zinc-50 focus:border-zinc-400 focus:bg-white focus:ring-4 focus:ring-zinc-100 transition-all cursor-pointer">
+                                                <option value="monthly">Month-to-month</option>
+                                                <option value="yearly">One year</option>
+                                                <option value="twoyear">Two year</option>
+                                            </select>
+                                            <iconify-icon icon="solar:alt-arrow-down-linear" class="absolute right-3.5 top-3 text-zinc-400 pointer-events-none group-hover:text-zinc-600 transition-colors"></iconify-icon>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-1.5 pt-1">
+                                        <label for="payment" class="text-xs font-medium text-zinc-600 ml-0.5">Payment Method</label>
+                                        <div class="relative group">
+                                            <select id="payment" name="payment" class="w-full appearance-none rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none hover:bg-zinc-50 focus:border-zinc-400 focus:bg-white focus:ring-4 focus:ring-zinc-100 transition-all cursor-pointer">
+                                                <option value="electronic">Electronic check</option>
+                                                <option value="mailed">Mailed check</option>
+                                                <option value="bank">Bank transfer</option>
+                                                <option value="credit">Credit card</option>
+                                            </select>
+                                            <iconify-icon icon="solar:alt-arrow-down-linear" class="absolute right-3.5 top-3 text-zinc-400 pointer-events-none group-hover:text-zinc-600 transition-colors"></iconify-icon>
+                                        </div>
+                                    </div>
+
+                                    <label class="flex items-start gap-3 cursor-pointer group pt-2 pb-1">
+                                        <div class="relative flex items-center justify-center mt-0.5">
+                                            <input type="checkbox" id="paperless" name="paperless" class="peer sr-only" checked>
+                                            <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
+                                            <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
+                                        </div>
+                                        <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Paperless Billing</span>
+                                    </label>
+
+                                    <div class="space-y-1.5 pt-2 border-t border-zinc-100">
+                                        <label for="monthlyCharges" class="text-xs font-medium text-zinc-600 ml-0.5">Monthly Charges</label>
+                                        <div class="relative flex items-center">
+                                            <span class="absolute left-3.5 text-zinc-400 text-sm font-medium">₹</span>
+                                            <input type="number" id="monthlyCharges" name="monthlyCharges" min="500" max="15000" value="3000" step="100" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 pl-8 pr-3.5 py-2.5 text-sm text-zinc-900 outline-none hover:bg-zinc-50 focus:border-zinc-400 focus:bg-white focus:ring-4 focus:ring-zinc-100 transition-all">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="space-y-1.5 pt-1">
+                                        <label for="totalCharges" class="text-xs font-medium text-zinc-600 ml-0.5">Total Charges</label>
+                                        <div class="relative flex items-center">
+                                            <span class="absolute left-3.5 text-zinc-400 text-sm font-medium">₹</span>
+                                            <input type="number" id="totalCharges" name="totalCharges" min="0" max="200000" value="30000" step="1000" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 pl-8 pr-3.5 py-2.5 text-sm text-zinc-900 outline-none hover:bg-zinc-50 focus:border-zinc-400 focus:bg-white focus:ring-4 focus:ring-zinc-100 transition-all">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="pt-6 border-t border-zinc-100 flex justify-end">
+                                <button type="submit" class="bg-zinc-900 hover:bg-zinc-800 text-white px-6 py-2.5 rounded-xl text-sm font-medium transition-all focus:ring-4 focus:ring-zinc-900/10 outline-none flex items-center gap-2.5 shadow-md shadow-zinc-900/10 ring-1 ring-inset ring-zinc-900/20">
+                                    <iconify-icon icon="solar:calculator-linear" class="text-base"></iconify-icon> Run Prediction Model
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Results Output -->
+                <div id="predictionResult" class="hidden mt-8">
+                    <div id="riskCard" class="rounded-2xl border bg-white/80 backdrop-blur-xl shadow-sm overflow-hidden transition-all duration-300">
+                        <div class="p-8 md:p-10 flex flex-col md:flex-row gap-10 items-center md:items-start">
+                            
+                            <div class="flex-shrink-0 text-center w-full md:w-56 space-y-3 relative">
+                                <div id="riskIconBox" class="w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-3xl mb-6 shadow-sm ring-1 ring-inset">
+                                    <iconify-icon icon="solar:shield-warning-linear" id="riskIcon"></iconify-icon>
+                                </div>
+                                <h3 id="riskTitle" class="text-xs font-semibold text-zinc-500 uppercase tracking-widest">Risk Level</h3>
+                                <div id="riskPercentage" class="text-6xl font-semibold tracking-tighter text-zinc-900 py-1">0%</div>
+                                <p id="riskDescription" class="text-sm text-zinc-500 font-medium">Probability of Churn</p>
+                            </div>
+                            
+                            <div class="flex-grow w-full space-y-5">
+                                <div class="flex items-center gap-3 border-b border-zinc-100 pb-3">
+                                    <div class="w-2 h-2 rounded-full bg-zinc-400" id="actionDot"></div>
+                                    <h4 class="text-sm font-semibold tracking-tight text-zinc-900">Recommended Actions</h4>
+                                </div>
+                                <div id="suggestionsList" class="space-y-4">
+                                    <!-- Populated by JS -->
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Tab -->
+            <section id="analytics" class="tab-panel hidden animate-fade-in space-y-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="bg-white/80 backdrop-blur-md border border-zinc-200/80 rounded-2xl p-6 shadow-sm relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-b from-white/50 to-transparent pointer-events-none"></div>
+                        <div class="flex justify-between items-start mb-4 relative z-10">
+                            <p class="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Customers</p>
+                            <iconify-icon icon="solar:users-group-rounded-linear" class="text-zinc-400 text-lg"></iconify-icon>
+                        </div>
+                        <p class="text-3xl font-semibold tracking-tighter text-zinc-900 relative z-10">7,051</p>
+                        <div class="mt-2 text-xs font-medium text-emerald-600 flex items-center gap-1"><iconify-icon icon="solar:trend-up-linear"></iconify-icon> +1.2% this month</div>
+                    </div>
+                    <div class="bg-white/80 backdrop-blur-md border border-zinc-200/80 rounded-2xl p-6 shadow-sm relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-b from-white/50 to-transparent pointer-events-none"></div>
+                        <div class="flex justify-between items-start mb-4 relative z-10">
+                            <p class="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Churn Rate</p>
+                            <iconify-icon icon="solar:graph-down-linear" class="text-red-400 text-lg"></iconify-icon>
+                        </div>
+                        <p class="text-3xl font-semibold tracking-tighter text-red-600 relative z-10">26.5%</p>
+                        <div class="mt-2 text-xs font-medium text-red-500 flex items-center gap-1"><iconify-icon icon="solar:trend-up-linear"></iconify-icon> +0.4% this month</div>
+                    </div>
+                    <div class="bg-white/80 backdrop-blur-md border border-zinc-200/80 rounded-2xl p-6 shadow-sm relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-b from-white/50 to-transparent pointer-events-none"></div>
+                        <div class="flex justify-between items-start mb-4 relative z-10">
+                            <p class="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Avg MRR</p>
+                            <iconify-icon icon="solar:wallet-money-linear" class="text-zinc-400 text-lg"></iconify-icon>
+                        </div>
+                        <p class="text-3xl font-semibold tracking-tighter text-zinc-900 relative z-10">₹5,180</p>
+                        <div class="mt-2 text-xs font-medium text-zinc-500 flex items-center gap-1">Per active user</div>
+                    </div>
+                    <div class="bg-white/80 backdrop-blur-md border border-zinc-200/80 rounded-2xl p-6 shadow-sm relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-b from-white/50 to-transparent pointer-events-none"></div>
+                        <div class="flex justify-between items-start mb-4 relative z-10">
+                            <p class="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Avg Lifetime</p>
+                            <iconify-icon icon="solar:hourglass-linear" class="text-zinc-400 text-lg"></iconify-icon>
+                        </div>
+                        <p class="text-3xl font-semibold tracking-tighter text-zinc-900 relative z-10">32<span class="text-base text-zinc-400 font-medium ml-1 tracking-normal">mo</span></p>
+                        <div class="mt-2 text-xs font-medium text-emerald-600 flex items-center gap-1"><iconify-icon icon="solar:trend-up-linear"></iconify-icon> +2 mo YoY</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white/80 backdrop-blur-md border border-zinc-200/80 rounded-2xl p-8 shadow-sm space-y-8">
+                        <div class="flex items-center gap-3 border-b border-zinc-100 pb-4">
+                            <div class="w-2 h-2 rounded-full bg-zinc-900"></div>
+                            <h3 class="text-sm font-semibold text-zinc-900 tracking-tight">Churn by Service Type</h3>
+                        </div>
+                        <div class="space-y-5">
+                            <div>
+                                <div class="flex justify-between text-xs mb-2">
+                                    <span class="text-zinc-600 font-medium">Fiber Optic</span>
+                                    <span class="text-zinc-900 font-semibold">41.8%</span>
+                                </div>
+                                <div class="w-full bg-zinc-100 rounded-full h-1 overflow-hidden">
+                                    <div class="bg-red-500 h-1 rounded-full relative progress-41-8">
+                                        <div class="absolute inset-0 bg-white/20 w-full h-full"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs mb-2">
+                                    <span class="text-zinc-600 font-medium">DSL Internet</span>
+                                    <span class="text-zinc-900 font-semibold">18.7%</span>
+                                </div>
+                                <div class="w-full bg-zinc-100 rounded-full h-1 overflow-hidden">
+                                    <div class="bg-amber-400 h-1 rounded-full progress-18-7"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs mb-2">
+                                    <span class="text-zinc-600 font-medium">Phone Only</span>
+                                    <span class="text-zinc-900 font-semibold">15.2%</span>
+                                </div>
+                                <div class="w-full bg-zinc-100 rounded-full h-1 overflow-hidden">
+                                    <div class="bg-zinc-400 h-1 rounded-full progress-15-2"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs mb-2">
+                                    <span class="text-zinc-600 font-medium">No Internet</span>
+                                    <span class="text-zinc-900 font-semibold">7.4%</span>
+                                </div>
+                                <div class="w-full bg-zinc-100 rounded-full h-1 overflow-hidden">
+                                    <div class="bg-emerald-400 h-1 rounded-full progress-7-4"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/80 backdrop-blur-md border border-zinc-200/80 rounded-2xl p-8 shadow-sm space-y-8">
+                        <div class="flex items-center gap-3 border-b border-zinc-100 pb-4">
+                            <div class="w-2 h-2 rounded-full bg-zinc-900"></div>
+                            <h3 class="text-sm font-semibold text-zinc-900 tracking-tight">Churn by Contract Length</h3>
+                        </div>
+                        <div class="space-y-5">
+                            <div>
+                                <div class="flex justify-between text-xs mb-2">
+                                    <span class="text-zinc-600 font-medium">Month-to-month</span>
+                                    <span class="text-zinc-900 font-semibold">42.7%</span>
+                                </div>
+                                <div class="w-full bg-zinc-100 rounded-full h-1 overflow-hidden">
+                                    <div class="bg-red-500 h-1 rounded-full relative progress-42-7">
+                                        <div class="absolute inset-0 bg-white/20 w-full h-full"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs mb-2">
+                                    <span class="text-zinc-600 font-medium">One year</span>
+                                    <span class="text-zinc-900 font-semibold">11.3%</span>
+                                </div>
+                                <div class="w-full bg-zinc-100 rounded-full h-1 overflow-hidden">
+                                    <div class="bg-amber-400 h-1 rounded-full progress-11-3"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs mb-2">
+                                    <span class="text-zinc-600 font-medium">Two year</span>
+                                    <span class="text-zinc-900 font-semibold">2.8%</span>
+                                </div>
+                                <div class="w-full bg-zinc-100 rounded-full h-1 overflow-hidden">
+                                    <div class="bg-emerald-400 h-1 rounded-full progress-2-8"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-zinc-900 rounded-2xl p-8 shadow-xl shadow-zinc-900/10 text-zinc-100 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-zinc-800 via-transparent to-transparent opacity-50"></div>
+                    <div class="relative z-10">
+                        <h3 class="text-sm font-semibold text-white flex items-center gap-3 mb-6">
+                            <iconify-icon icon="solar:lightbulb-bolt-linear" class="text-amber-400 text-lg"></iconify-icon> Intelligence Insights
+                        </h3>
+                        <ul class="grid grid-cols-1 md:grid-cols-2 gap-5 text-sm text-zinc-300">
+                            <li class="flex items-start gap-3 bg-zinc-800/50 p-4 rounded-xl border border-zinc-700/50">
+                                <iconify-icon icon="solar:danger-circle-linear" class="mt-0.5 text-zinc-400 text-base flex-shrink-0"></iconify-icon>
+                                <span class="leading-relaxed"><strong class="text-white font-medium">Fiber risk:</strong> Fiber optic accounts show elevated drop-off; review infrastructure stability or comparative pricing.</span>
+                            </li>
+                            <li class="flex items-start gap-3 bg-zinc-800/50 p-4 rounded-xl border border-zinc-700/50">
+                                <iconify-icon icon="solar:shield-check-linear" class="mt-0.5 text-zinc-400 text-base flex-shrink-0"></iconify-icon>
+                                <span class="leading-relaxed"><strong class="text-white font-medium">Lock-in effect:</strong> Transitioning from monthly to long-term contracts improves retention probability by 4x.</span>
+                            </li>
+                            <li class="flex items-start gap-3 bg-zinc-800/50 p-4 rounded-xl border border-zinc-700/50">
+                                <iconify-icon icon="solar:settings-linear" class="mt-0.5 text-zinc-400 text-base flex-shrink-0"></iconify-icon>
+                                <span class="leading-relaxed"><strong class="text-white font-medium">Support value:</strong> Active tech support add-ons correlate strongly with 15% lower baseline churn.</span>
+                            </li>
+                            <li class="flex items-start gap-3 bg-zinc-800/50 p-4 rounded-xl border border-zinc-700/50">
+                                <iconify-icon icon="solar:card-linear" class="mt-0.5 text-zinc-400 text-base flex-shrink-0"></iconify-icon>
+                                <span class="leading-relaxed"><strong class="text-white font-medium">Payment friction:</strong> Manual electronic checks see 22% higher involuntary churn rates than auto-pay CCs.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recommendations Tab -->
+            <section id="recommendations" class="tab-panel hidden animate-fade-in space-y-6">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <div class="bg-white/80 backdrop-blur-md border border-zinc-200/80 rounded-2xl p-8 shadow-sm space-y-5 relative overflow-hidden group hover:border-zinc-300 transition-colors">
+                        <div class="absolute top-0 right-0 p-8">
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-red-50 text-red-600 ring-1 ring-inset ring-red-500/20">High Impact</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-zinc-100 flex items-center justify-center text-zinc-700 border border-zinc-200/50">
+                            <iconify-icon icon="solar:document-text-linear" class="text-xl"></iconify-icon>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-base font-semibold text-zinc-900 tracking-tight">Contract Optimization</h3>
+                            <p class="text-sm text-zinc-500 leading-relaxed">Migrating month-to-month users to structured agreements stabilizes revenue immediately.</p>
+                        </div>
+                        <ul class="text-sm text-zinc-600 space-y-3 pt-3 border-t border-zinc-100">
+                            <li class="flex items-start gap-3"><iconify-icon icon="solar:check-circle-linear" class="mt-0.5 text-zinc-400"></iconify-icon> Offer 10-15% discount for 1-year terms</li>
+                            <li class="flex items-start gap-3"><iconify-icon icon="solar:check-circle-linear" class="mt-0.5 text-zinc-400"></iconify-icon> Free premium tier for 2-year lock-in</li>
+                        </ul>
+                        <div class="pt-4 text-xs font-semibold text-zinc-900 bg-zinc-50 -mx-8 -mb-8 p-6 border-t border-zinc-100">
+                            Est. Impact: <span class="text-emerald-600 font-medium">+₹2.5L/mo retained</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/80 backdrop-blur-md border border-zinc-200/80 rounded-2xl p-8 shadow-sm space-y-5 relative overflow-hidden group hover:border-zinc-300 transition-colors">
+                        <div class="absolute top-0 right-0 p-8">
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-amber-50 text-amber-600 ring-1 ring-inset ring-amber-500/20">Medium Impact</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-zinc-100 flex items-center justify-center text-zinc-700 border border-zinc-200/50">
+                            <iconify-icon icon="solar:box-minimalistic-linear" class="text-xl"></iconify-icon>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-base font-semibold text-zinc-900 tracking-tight">Service Bundling</h3>
+                            <p class="text-sm text-zinc-500 leading-relaxed">Multi-service subscribers exhibit higher switching costs and lower churn propensity.</p>
+                        </div>
+                        <ul class="text-sm text-zinc-600 space-y-3 pt-3 border-t border-zinc-100">
+                            <li class="flex items-start gap-3"><iconify-icon icon="solar:check-circle-linear" class="mt-0.5 text-zinc-400"></iconify-icon> Target internet-only users with IPTV trials</li>
+                            <li class="flex items-start gap-3"><iconify-icon icon="solar:check-circle-linear" class="mt-0.5 text-zinc-400"></iconify-icon> Create holistic 'Security Suite' bundles</li>
+                        </ul>
+                        <div class="pt-4 text-xs font-semibold text-zinc-900 bg-zinc-50 -mx-8 -mb-8 p-6 border-t border-zinc-100">
+                            Est. Impact: <span class="text-emerald-600 font-medium">+₹1.8L/mo revenue</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/80 backdrop-blur-md border border-zinc-200/80 rounded-2xl p-8 shadow-sm space-y-5 relative overflow-hidden group hover:border-zinc-300 transition-colors">
+                        <div class="absolute top-0 right-0 p-8">
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-red-50 text-red-600 ring-1 ring-inset ring-red-500/20">High Impact</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-zinc-100 flex items-center justify-center text-zinc-700 border border-zinc-200/50">
+                            <iconify-icon icon="solar:headphones-round-linear" class="text-xl"></iconify-icon>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-base font-semibold text-zinc-900 tracking-tight">Support Enhancement</h3>
+                            <p class="text-sm text-zinc-500 leading-relaxed">Technical friction is a leading involuntary churn indicator for Fiber network customers.</p>
+                        </div>
+                        <ul class="text-sm text-zinc-600 space-y-3 pt-3 border-t border-zinc-100">
+                            <li class="flex items-start gap-3"><iconify-icon icon="solar:check-circle-linear" class="mt-0.5 text-zinc-400"></iconify-icon> Proactive outreach in first 90 days</li>
+                            <li class="flex items-start gap-3"><iconify-icon icon="solar:check-circle-linear" class="mt-0.5 text-zinc-400"></iconify-icon> Include basic tech support in all tiers</li>
+                        </ul>
+                        <div class="pt-4 text-xs font-semibold text-zinc-900 bg-zinc-50 -mx-8 -mb-8 p-6 border-t border-zinc-100">
+                            Cost: <span class="text-zinc-500 font-medium">₹1.2L/mo investment</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white/80 backdrop-blur-md border border-zinc-200/80 rounded-2xl p-8 shadow-sm space-y-5 relative overflow-hidden group hover:border-zinc-300 transition-colors">
+                        <div class="absolute top-0 right-0 p-8">
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-emerald-50 text-emerald-600 ring-1 ring-inset ring-emerald-500/20">Quick Win</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-zinc-100 flex items-center justify-center text-zinc-700 border border-zinc-200/50">
+                            <iconify-icon icon="solar:wallet-linear" class="text-xl"></iconify-icon>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-base font-semibold text-zinc-900 tracking-tight">Auto-Pay Adoption</h3>
+                            <p class="text-sm text-zinc-500 leading-relaxed">Frictionless payments prevent involuntary churn originating from missed manual invoices.</p>
+                        </div>
+                        <ul class="text-sm text-zinc-600 space-y-3 pt-3 border-t border-zinc-100">
+                            <li class="flex items-start gap-3"><iconify-icon icon="solar:check-circle-linear" class="mt-0.5 text-zinc-400"></iconify-icon> ₹500 one-time credit for auto-pay setup</li>
+                            <li class="flex items-start gap-3"><iconify-icon icon="solar:check-circle-linear" class="mt-0.5 text-zinc-400"></iconify-icon> Simplify credit card update workflows</li>
+                        </ul>
+                        <div class="pt-4 text-xs font-semibold text-zinc-900 bg-zinc-50 -mx-8 -mb-8 p-6 border-t border-zinc-100">
+                            Est. Impact: <span class="text-emerald-600 font-medium">+₹75K/mo retained</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Tab Navigation
+        const navBtns = document.querySelectorAll('.nav-btn');
+        const tabPanels = document.querySelectorAll('.tab-panel');
+
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                navBtns.forEach(b => {
+                    b.classList.remove('bg-white', 'shadow-sm', 'text-zinc-900', 'border-zinc-200/50', 'ring-1', 'ring-black/5');
+                    b.classList.add('text-zinc-500', 'border-transparent');
+                });
+                tabPanels.forEach(p => {
+                    p.classList.remove('block');
+                    p.classList.add('hidden');
+                });
+
+                btn.classList.remove('text-zinc-500', 'border-transparent');
+                btn.classList.add('bg-white', 'shadow-sm', 'text-zinc-900', 'border-zinc-200/50', 'ring-1', 'ring-black/5');
+                const targetId = btn.getAttribute('data-target');
+                document.getElementById(targetId).classList.remove('hidden');
+                document.getElementById(targetId).classList.add('block');
+            });
+        });
+
+        // Form Logic
+        const tenureInput = document.getElementById('tenure');
+        const tenureValue = document.getElementById('tenureValue');
+        const internetSelect = document.getElementById('internet');
+        const additionalServices = document.getElementById('additionalServices');
+
+        tenureInput.addEventListener('input', (e) => {
+            tenureValue.textContent = `${e.target.value} mo`;
+        });
+
+        internetSelect.addEventListener('change', (e) => {
+            if (e.target.value === 'no') {
+                additionalServices.classList.add('hidden');
+                const checkboxes = additionalServices.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(cb => cb.checked = false);
+            } else {
+                additionalServices.classList.remove('hidden');
+            }
+        });
+
+        if (internetSelect.value === 'no') {
+            additionalServices.classList.add('hidden');
+        } else {
+            additionalServices.classList.remove('hidden');
+        }
+
+        // Prediction Submission
+        document.getElementById('predictionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Show loading state
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<iconify-icon icon="solar:loader-2-linear" class="text-base animate-spin"></iconify-icon> Processing...';
+            submitBtn.disabled = true;
+            
+            // Collect form data
+            const formData = new FormData(this);
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                if (this.elements[key].type === 'checkbox') {
+                    data[key] = this.elements[key].checked;
+                } else {
+                    data[key] = value;
+                }
+            }
+            
+            try {
+                // Make API call to backend
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayPredictionResults(result);
+                } else {
+                    throw new Error(result.error || 'Prediction failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error making prediction: ' + error.message);
+            } finally {
+                // Reset button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        function calculateRiskScore(formData) {
+            let score = 0.3; 
+            
+            if (formData.get('contract') === 'monthly') score += 0.3;
+            else if (formData.get('contract') === 'yearly') score += 0.1;
+            
+            if (formData.get('internet') === 'fiber') score += 0.2;
+            
+            const tenure = parseInt(formData.get('tenure'));
+            if (tenure < 12) score += 0.2;
+            else if (tenure < 24) score += 0.1;
+            
+            const services = ['onlineSecurity', 'onlineBackup', 'deviceProtection', 'techSupport'];
+            const servicesCount = services.filter(service => formData.get(service)).length;
+            if (servicesCount === 0 && formData.get('internet') !== 'no') score += 0.15;
+            
+            if (formData.get('payment') === 'electronic') score += 0.1;
+            
+            return Math.min(Math.max(score, 0), 1);
+        }
+
+        function displayPredictionResults(result) {
+            const resultDiv = document.getElementById('predictionResult');
+            const riskCard = document.getElementById('riskCard');
+            const riskPercentage = document.getElementById('riskPercentage');
+            const riskTitle = document.getElementById('riskTitle');
+            const riskIcon = document.getElementById('riskIcon');
+            const riskIconBox = document.getElementById('riskIconBox');
+            const actionDot = document.getElementById('actionDot');
+            const suggestionsList = document.getElementById('suggestionsList');
+            
+            const percentage = result.risk_percentage;
+            
+            // Animate numbers
+            let currentNum = 0;
+            const step = Math.ceil(percentage / 20);
+            const timer = setInterval(() => {
+                currentNum += step;
+                if(currentNum >= percentage) {
+                    currentNum = percentage;
+                    clearInterval(timer);
+                }
+                riskPercentage.textContent = currentNum + '%';
+            }, 30);
+            
+            // Reset classes
+            riskCard.className = 'rounded-2xl border bg-white/80 backdrop-blur-xl shadow-lg overflow-hidden transition-all duration-300';
+            riskIconBox.className = 'w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-3xl mb-6 shadow-sm ring-1 ring-inset';
+            riskPercentage.className = 'text-6xl font-semibold tracking-tighter py-1';
+            
+            if (result.risk_class === 'critical') {
+                riskTitle.textContent = 'Critical Risk';
+                riskCard.classList.add('border-red-200', 'shadow-red-500/5');
+                riskIconBox.classList.add('bg-red-50', 'text-red-600', 'ring-red-500/20');
+                riskPercentage.classList.add('text-red-600');
+                actionDot.classList.remove('bg-zinc-400'); actionDot.classList.add('bg-red-500');
+                riskIcon.setAttribute('icon', 'solar:shield-warning-linear');
+            } else if (result.risk_class === 'elevated') {
+                riskTitle.textContent = 'Elevated Risk';
+                riskCard.classList.add('border-amber-200', 'shadow-amber-500/5');
+                riskIconBox.classList.add('bg-amber-50', 'text-amber-600', 'ring-amber-500/20');
+                riskPercentage.classList.add('text-amber-600');
+                actionDot.classList.remove('bg-zinc-400'); actionDot.classList.add('bg-amber-500');
+                riskIcon.setAttribute('icon', 'solar:shield-warning-linear');
+            } else {
+                riskTitle.textContent = 'Healthy Account';
+                riskCard.classList.add('border-emerald-200', 'shadow-emerald-500/5');
+                riskIconBox.classList.add('bg-emerald-50', 'text-emerald-600', 'ring-emerald-500/20');
+                riskPercentage.classList.add('text-emerald-600');
+                actionDot.classList.remove('bg-zinc-400'); actionDot.classList.add('bg-emerald-500');
+                riskIcon.setAttribute('icon', 'solar:shield-check-linear');
+            }
+            
+            // Display suggestions from API
+            const suggestions = result.suggestions;
+            suggestionsList.innerHTML = suggestions.map((s, i) => `
+                <div class="p-4 rounded-xl bg-zinc-50 border border-zinc-100 flex gap-4 transition-all duration-500 opacity-0 translate-y-2" style="animation: fadeUp 0.5s ease forwards ${i * 0.1}s">
+                    <div class="w-8 h-8 rounded-lg bg-white border border-zinc-200 shadow-sm flex items-center justify-center flex-shrink-0">
+                        <iconify-icon icon="${s.icon}" class="text-lg ${s.colorClass}"></iconify-icon>
+                    </div>
+                    <div>
+                        <h5 class="text-sm font-semibold text-zinc-900 mb-1">${s.title}</h5>
+                        <p class="text-xs text-zinc-600 leading-relaxed">${s.description}</p>
+                    </div>
+                </div>
+            `).join('');
+            
+            resultDiv.classList.remove('hidden');
+            setTimeout(() => {
+                resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 50);
+        }
+
+        function generateSuggestions(riskScore, formData) {
+            const suggestions = [];
+            
+            if (riskScore > 0.7) {
+                if (formData.get('contract') === 'monthly') {
+                    suggestions.push({
+                        icon: 'solar:calendar-minimalistic-linear',
+                        colorClass: 'text-red-500',
+                        title: 'Restructure Agreement',
+                        description: 'High volatility detected. Deploy immediate 15% discount offer to lock in an annual commitment.'
+                    });
+                }
+                if (parseInt(formData.get('tenure')) < 12) {
+                    suggestions.push({
+                        icon: 'solar:phone-calling-linear',
+                        colorClass: 'text-amber-500',
+                        title: 'Executive Outreach',
+                        description: 'Account is failing to find value. Schedule an expedited CS call to audit onboarding process.'
+                    });
+                }
+            } else if (riskScore > 0.4) {
+                suggestions.push({
+                    icon: 'solar:chat-round-line-linear',
+                    colorClass: 'text-amber-500',
+                    title: 'Feedback Loop Initiation',
+                    description: 'Moderate risk indicators present. Trigger automated email sequence to gauge NPS and gather feedback.'
+                });
+            }
+            
+            if (formData.get('internet') === 'fiber' && !formData.get('techSupport')) {
+                suggestions.push({
+                    icon: 'solar:settings-minimalistic-linear',
+                    colorClass: 'text-zinc-700',
+                    title: 'Support Tier Upgrade',
+                    description: 'Fiber user lacks dedicated support. Offer 3 free months of premium support to reduce technical churn.'
+                });
+            }
+            
+            if (formData.get('payment') === 'electronic') {
+                suggestions.push({
+                    icon: 'solar:wallet-linear',
+                    colorClass: 'text-zinc-700',
+                    title: 'Automate Billing',
+                    description: 'Manual payment detected. Incentivize credit card auto-pay with a one-time structural account credit.'
+                });
+            }
+            
+            if(suggestions.length === 0) {
+                 suggestions.push({
+                    icon: 'solar:star-linear',
+                    colorClass: 'text-emerald-500',
+                    title: 'Maintain Relationship',
+                    description: 'Account metrics are optimal. Continue standard engagement rhythm and monitor for expansion signals.'
+                });
+            }
+            
+            return suggestions.slice(0, 3);
+        }
+
+        // Add custom animation for result items
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeUp {
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
