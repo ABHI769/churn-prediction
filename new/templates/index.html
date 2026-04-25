@@ -294,9 +294,9 @@
                 <div class="bg-white/80 backdrop-blur-xl border border-zinc-200/80 rounded-2xl shadow-sm overflow-hidden ring-1 ring-inset ring-white">
                     <div class="p-6 md:p-10">
                         <form id="predictionForm" class="space-y-10">
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 
-                                <!-- Demographics -->
+                                <!-- Column 1: Demographics -->
                                 <div class="space-y-6">
                                     <div class="flex items-center gap-3 border-b border-zinc-100 pb-3">
                                         <div class="w-6 h-6 rounded bg-zinc-100 flex items-center justify-center text-zinc-600">
@@ -310,209 +310,426 @@
                                         <div class="relative group">
                                             <select id="gender" name="gender" class="w-full appearance-none rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none hover:bg-zinc-50 focus:border-zinc-400 focus:bg-white focus:ring-4 focus:ring-zinc-100 transition-all cursor-pointer">
                                                 <option value="male">Male</option>
-                                                <option value="female">Female</option>
+                                                <option value="female" selected>Female</option>
                                             </select>
                                             <iconify-icon icon="solar:alt-arrow-down-linear" class="absolute right-3.5 top-3 text-zinc-400 pointer-events-none group-hover:text-zinc-600 transition-colors"></iconify-icon>
                                         </div>
                                     </div>
 
-                                    <div class="space-y-3.5 pt-2">
-                                        <label class="flex items-start gap-3 cursor-pointer group">
-                                            <div class="relative flex items-center justify-center mt-0.5">
-                                                <input type="checkbox" id="senior" name="senior" class="peer sr-only">
-                                                <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
-                                                <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
-                                            </div>
-                                            <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Senior Citizen</span>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <label class="flex items-center gap-2 cursor-pointer group">
+                                            <input type="checkbox" id="senior" name="senior" class="w-4 h-4 rounded border-zinc-300 text-zinc-900 focus:ring-zinc-900">
+                                            <span class="text-xs text-zinc-700">Senior Citizen</span>
                                         </label>
-                                        
-                                        <label class="flex items-start gap-3 cursor-pointer group">
-                                            <div class="relative flex items-center justify-center mt-0.5">
-                                                <input type="checkbox" id="partner" name="partner" class="peer sr-only">
-                                                <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
-                                                <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
-                                            </div>
-                                            <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Has Partner</span>
+                                        <label class="flex items-center gap-2 cursor-pointer group">
+                                            <input type="checkbox" id="partner" name="partner" checked class="w-4 h-4 rounded border-zinc-300 text-zinc-900 focus:ring-zinc-900">
+                                            <span class="text-xs text-zinc-700">Has Partner</span>
                                         </label>
-
-                                        <label class="flex items-start gap-3 cursor-pointer group">
-                                            <div class="relative flex items-center justify-center mt-0.5">
-                                                <input type="checkbox" id="dependents" name="dependents" class="peer sr-only">
-                                                <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
-                                                <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
-                                            </div>
-                                            <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Has Dependents</span>
+                                        <label class="flex items-center gap-2 cursor-pointer group">
+                                            <input type="checkbox" id="dependents" name="dependents" checked class="w-4 h-4 rounded border-zinc-300 text-zinc-900 focus:ring-zinc-900">
+                                            <span class="text-xs text-zinc-700">Has Dependents</span>
                                         </label>
                                     </div>
 
-                                    <div class="space-y-3 pt-4 border-t border-zinc-100">
-                                        <div class="flex justify-between items-end">
-                                            <label for="tenure" class="text-xs font-medium text-zinc-600 ml-0.5">Account Tenure</label>
-                                            <span id="tenureValue" class="text-xs font-semibold text-zinc-900 bg-zinc-100 px-2 py-0.5 rounded-md border border-zinc-200">12 mo</span>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="space-y-1.5">
+                                            <label for="age" class="text-xs font-medium text-zinc-600 ml-0.5">Age</label>
+                                            <input type="number" id="age" name="age" value="42" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none hover:bg-zinc-50 focus:border-zinc-400 focus:bg-white transition-all">
                                         </div>
-                                        <input type="range" id="tenure" name="tenure" min="1" max="72" value="12" class="w-full">
+                                        <div class="space-y-1.5">
+                                            <label for="tenure" class="text-xs font-medium text-zinc-600 ml-0.5">Account Tenure (mo)</label>
+                                            <input type="number" id="tenure" name="tenure" value="48" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none hover:bg-zinc-50 focus:border-zinc-400 focus:bg-white transition-all">
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-1.5">
+                                        <label for="occupation" class="text-xs font-medium text-zinc-600 ml-0.5">Occupation</label>
+                                        <select id="occupation" name="occupation" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none hover:bg-zinc-50 focus:border-zinc-400 focus:bg-white transition-all">
+                                            <option value="salaried">Salaried</option>
+                                            <option value="self_employed">Self-employed</option>
+                                            <option value="retired">Retired</option>
+                                            <option value="student">Student</option>
+                                            <option value="unemployed">Unemployed</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="space-y-1.5">
+                                        <label for="income" class="text-xs font-medium text-zinc-600 ml-0.5">Monthly Income</label>
+                                        <div class="relative flex items-center">
+                                            <span class="absolute left-3.5 text-zinc-400 text-sm font-medium">₹</span>
+                                            <input type="number" id="income" name="income" value="95000" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 pl-8 pr-3.5 py-2.5 text-sm text-zinc-900 outline-none hover:bg-zinc-50 focus:border-zinc-400 focus:bg-white transition-all">
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="space-y-1.5">
+                                            <label for="location" class="text-xs font-medium text-zinc-600 ml-0.5">Location</label>
+                                            <select id="location" name="location" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none hover:bg-zinc-50 focus:border-zinc-400 focus:bg-white transition-all">
+                                                <option value="urban">Urban</option>
+                                                <option value="semi_urban">Semi-urban</option>
+                                                <option value="rural">Rural</option>
+                                            </select>
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <label for="segment" class="text-xs font-medium text-zinc-600 ml-0.5">Customer Segment</label>
+                                            <select id="segment" name="segment" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none hover:bg-zinc-50 focus:border-zinc-400 focus:bg-white transition-all">
+                                                <option value="standard">Standard</option>
+                                                <option value="premium" selected>Premium</option>
+                                                <option value="vip">VIP</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <!-- Services -->
+                                <!-- Column 2: Subscriptions & Services -->
                                 <div class="space-y-6">
                                     <div class="flex items-center gap-3 border-b border-zinc-100 pb-3">
                                         <div class="w-6 h-6 rounded bg-zinc-100 flex items-center justify-center text-zinc-600">
                                             <iconify-icon icon="solar:server-square-linear"></iconify-icon>
                                         </div>
-                                        <h3 class="text-sm font-semibold text-zinc-900 tracking-tight">Subscriptions</h3>
+                                        <h3 class="text-sm font-semibold text-zinc-900 tracking-tight">Subscriptions & Services</h3>
                                     </div>
                                     
-                                    <label class="flex items-start gap-3 cursor-pointer group">
-                                        <div class="relative flex items-center justify-center mt-0.5">
-                                            <input type="checkbox" id="phone" name="phone" class="peer sr-only" checked>
-                                            <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
-                                            <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
-                                        </div>
-                                        <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Phone Service</span>
+                                    <label class="flex items-center gap-2 cursor-pointer group">
+                                        <input type="checkbox" id="phone" name="phone" checked class="w-4 h-4 rounded border-zinc-300 text-zinc-900 focus:ring-zinc-900">
+                                        <span class="text-xs text-zinc-700">Phone Service</span>
                                     </label>
 
-                                    <div class="space-y-1.5">
-                                        <label for="multipleLines" class="text-xs font-medium text-zinc-600 ml-0.5">Multiple Lines</label>
-                                        <div class="relative group">
-                                            <select id="multipleLines" name="multipleLines" class="w-full appearance-none rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none hover:bg-zinc-50 focus:border-zinc-400 focus:bg-white focus:ring-4 focus:ring-zinc-100 transition-all cursor-pointer">
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="space-y-1.5">
+                                            <label for="multipleLines" class="text-xs font-medium text-zinc-600 ml-0.5">Multiple Lines</label>
+                                            <select id="multipleLines" name="multipleLines" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
                                                 <option value="no">No</option>
-                                                <option value="yes">Yes</option>
+                                                <option value="yes" selected>Yes</option>
                                             </select>
-                                            <iconify-icon icon="solar:alt-arrow-down-linear" class="absolute right-3.5 top-3 text-zinc-400 pointer-events-none group-hover:text-zinc-600 transition-colors"></iconify-icon>
                                         </div>
-                                    </div>
-
-                                    <div class="space-y-1.5 pt-1">
-                                        <label for="internet" class="text-xs font-medium text-zinc-600 ml-0.5">Internet Service</label>
-                                        <div class="relative group">
-                                            <select id="internet" name="internet" class="w-full appearance-none rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none hover:bg-zinc-50 focus:border-zinc-400 focus:bg-white focus:ring-4 focus:ring-zinc-100 transition-all cursor-pointer">
+                                        <div class="space-y-1.5">
+                                            <label for="internet" class="text-xs font-medium text-zinc-600 ml-0.5">Internet Service</label>
+                                            <select id="internet" name="internet" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                                <option value="fiber">Fiber optic</option>
+                                                <option value="dsl" selected>DSL</option>
                                                 <option value="no">None</option>
-                                                <option value="dsl">DSL</option>
-                                                <option value="fiber">Fiber Optic</option>
                                             </select>
-                                            <iconify-icon icon="solar:alt-arrow-down-linear" class="absolute right-3.5 top-3 text-zinc-400 pointer-events-none group-hover:text-zinc-600 transition-colors"></iconify-icon>
                                         </div>
                                     </div>
 
-                                    <div id="additionalServices" class="hidden space-y-3.5 pt-4 border-t border-zinc-100">
-                                        <label class="flex items-start gap-3 cursor-pointer group">
-                                            <div class="relative flex items-center justify-center mt-0.5">
-                                                <input type="checkbox" id="onlineSecurity" name="onlineSecurity" class="peer sr-only">
-                                                <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
-                                                <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
-                                            </div>
-                                            <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Online Security</span>
-                                        </label>
-                                        <label class="flex items-start gap-3 cursor-pointer group">
-                                            <div class="relative flex items-center justify-center mt-0.5">
-                                                <input type="checkbox" id="onlineBackup" name="onlineBackup" class="peer sr-only">
-                                                <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
-                                                <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
-                                            </div>
-                                            <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Online Backup</span>
-                                        </label>
-                                        <label class="flex items-start gap-3 cursor-pointer group">
-                                            <div class="relative flex items-center justify-center mt-0.5">
-                                                <input type="checkbox" id="deviceProtection" name="deviceProtection" class="peer sr-only">
-                                                <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
-                                                <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
-                                            </div>
-                                            <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Device Protection</span>
-                                        </label>
-                                        <label class="flex items-start gap-3 cursor-pointer group">
-                                            <div class="relative flex items-center justify-center mt-0.5">
-                                                <input type="checkbox" id="techSupport" name="techSupport" class="peer sr-only">
-                                                <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
-                                                <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
-                                            </div>
-                                            <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Tech Support</span>
-                                        </label>
-                                        <label class="flex items-start gap-3 cursor-pointer group">
-                                            <div class="relative flex items-center justify-center mt-0.5">
-                                                <input type="checkbox" id="streamingTV" name="streamingTV" class="peer sr-only">
-                                                <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
-                                                <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
-                                            </div>
-                                            <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Streaming TV</span>
-                                        </label>
-                                        <label class="flex items-start gap-3 cursor-pointer group">
-                                            <div class="relative flex items-center justify-center mt-0.5">
-                                                <input type="checkbox" id="streamingMovies" name="streamingMovies" class="peer sr-only">
-                                                <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
-                                                <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
-                                            </div>
-                                            <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Streaming Movies</span>
-                                        </label>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="space-y-1.5">
+                                            <label for="onlineSecurity" class="text-xs font-medium text-zinc-600 ml-0.5">Online Security</label>
+                                            <select id="onlineSecurity" name="onlineSecurity" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                                <option value="yes">Yes</option>
+                                                <option value="no">No</option>
+                                            </select>
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <label for="techSupport" class="text-xs font-medium text-zinc-600 ml-0.5">Tech Support</label>
+                                            <select id="techSupport" name="techSupport" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                                <option value="no">No</option>
+                                                <option value="yes" selected>Yes</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="space-y-1.5">
+                                            <label for="streamingTV" class="text-xs font-medium text-zinc-600 ml-0.5">Streaming TV</label>
+                                            <select id="streamingTV" name="streamingTV" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                                <option value="yes">Yes</option>
+                                                <option value="no">No</option>
+                                            </select>
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <label for="streamingMovies" class="text-xs font-medium text-zinc-600 ml-0.5">Streaming Movies</label>
+                                            <select id="streamingMovies" name="streamingMovies" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                                <option value="no">No</option>
+                                                <option value="yes" selected>Yes</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="space-y-1.5">
+                                            <label for="deviceProtection" class="text-xs font-medium text-zinc-600 ml-0.5">Device Protection</label>
+                                            <select id="deviceProtection" name="deviceProtection" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                                <option value="no">No</option>
+                                                <option value="yes" selected>Yes</option>
+                                            </select>
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <label for="premiumSupport" class="text-xs font-medium text-zinc-600 ml-0.5">Premium Support</label>
+                                            <select id="premiumSupport" name="premiumSupport" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                                <option value="no">No</option>
+                                                <option value="yes" selected>Yes</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <!-- Billing -->
+                                <!-- Column 3: Usage Behavior -->
+                                <div class="space-y-6">
+                                    <div class="flex items-center gap-3 border-b border-zinc-100 pb-3">
+                                        <div class="w-6 h-6 rounded bg-zinc-100 flex items-center justify-center text-zinc-600">
+                                            <iconify-icon icon="solar:chart-square-linear"></iconify-icon>
+                                        </div>
+                                        <h3 class="text-sm font-semibold text-zinc-900 tracking-tight">Usage Behavior</h3>
+                                    </div>
+
+                                    <div class="space-y-1.5">
+                                        <label for="dataUsage" class="text-xs font-medium text-zinc-600 ml-0.5">Monthly Data Usage (GB)</label>
+                                        <input type="number" id="dataUsage" name="dataUsage" value="38" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                    </div>
+
+                                    <div class="space-y-1.5">
+                                        <label for="minutesUsed" class="text-xs font-medium text-zinc-600 ml-0.5">Minutes Used Per Month</label>
+                                        <input type="number" id="minutesUsed" name="minutesUsed" value="420" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                    </div>
+
+                                    <div class="space-y-1.5">
+                                        <label for="smsSent" class="text-xs font-medium text-zinc-600 ml-0.5">SMS Sent Per Month</label>
+                                        <input type="number" id="smsSent" name="smsSent" value="80" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="space-y-1.5">
+                                            <label for="avgCallDuration" class="text-xs font-medium text-zinc-600 ml-0.5">Avg. Call Duration (Min)</label>
+                                            <input type="number" id="avgCallDuration" name="avgCallDuration" value="5.1" step="0.1" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <label for="serviceCalls" class="text-xs font-medium text-zinc-600 ml-0.5">Cust. Service Calls (3M)</label>
+                                            <input type="number" id="serviceCalls" name="serviceCalls" value="0" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-1.5">
+                                        <label for="lastLogin" class="text-xs font-medium text-zinc-600 ml-0.5">Last Login / Activity</label>
+                                        <select id="lastLogin" name="lastLogin" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                            <option value="3_days">3 days ago</option>
+                                            <option value="1_week">1 week ago</option>
+                                            <option value="2_weeks">2 weeks ago</option>
+                                            <option value="1_month">1 month ago</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="space-y-1.5">
+                                        <label for="usageTrend" class="text-xs font-medium text-zinc-600 ml-0.5">Usage Trend (vs 3M)</label>
+                                        <select id="usageTrend" name="usageTrend" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                            <option value="decreasing">Decreasing</option>
+                                            <option value="stable" selected>Stable</option>
+                                            <option value="increasing">Increasing</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Column 4: Billing & Payments -->
                                 <div class="space-y-6">
                                     <div class="flex items-center gap-3 border-b border-zinc-100 pb-3">
                                         <div class="w-6 h-6 rounded bg-zinc-100 flex items-center justify-center text-zinc-600">
                                             <iconify-icon icon="solar:card-linear"></iconify-icon>
                                         </div>
-                                        <h3 class="text-sm font-semibold text-zinc-900 tracking-tight">Billing details</h3>
+                                        <h3 class="text-sm font-semibold text-zinc-900 tracking-tight">Billing & Payments</h3>
                                     </div>
-                                    
+
                                     <div class="space-y-1.5">
                                         <label for="contract" class="text-xs font-medium text-zinc-600 ml-0.5">Contract Type</label>
-                                        <div class="relative group">
-                                            <select id="contract" name="contract" class="w-full appearance-none rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none hover:bg-zinc-50 focus:border-zinc-400 focus:bg-white focus:ring-4 focus:ring-zinc-100 transition-all cursor-pointer">
-                                                <option value="monthly">Month-to-month</option>
-                                                <option value="yearly">One year</option>
-                                                <option value="twoyear">Two year</option>
-                                            </select>
-                                            <iconify-icon icon="solar:alt-arrow-down-linear" class="absolute right-3.5 top-3 text-zinc-400 pointer-events-none group-hover:text-zinc-600 transition-colors"></iconify-icon>
-                                        </div>
+                                        <select id="contract" name="contract" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                            <option value="monthly">Month-to-month</option>
+                                            <option value="yearly">One year</option>
+                                            <option value="twoyear" selected>Two year</option>
+                                        </select>
                                     </div>
 
-                                    <div class="space-y-1.5 pt-1">
+                                    <div class="space-y-1.5">
                                         <label for="payment" class="text-xs font-medium text-zinc-600 ml-0.5">Payment Method</label>
-                                        <div class="relative group">
-                                            <select id="payment" name="payment" class="w-full appearance-none rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none hover:bg-zinc-50 focus:border-zinc-400 focus:bg-white focus:ring-4 focus:ring-zinc-100 transition-all cursor-pointer">
-                                                <option value="electronic">Electronic check</option>
-                                                <option value="mailed">Mailed check</option>
-                                                <option value="bank">Bank transfer</option>
-                                                <option value="credit">Credit card</option>
-                                            </select>
-                                            <iconify-icon icon="solar:alt-arrow-down-linear" class="absolute right-3.5 top-3 text-zinc-400 pointer-events-none group-hover:text-zinc-600 transition-colors"></iconify-icon>
-                                        </div>
+                                        <select id="payment" name="payment" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                            <option value="electronic">Electronic check</option>
+                                            <option value="mailed">Mailed check</option>
+                                            <option value="bank">Bank transfer</option>
+                                            <option value="credit" selected>Credit card</option>
+                                        </select>
                                     </div>
 
-                                    <label class="flex items-start gap-3 cursor-pointer group pt-2 pb-1">
-                                        <div class="relative flex items-center justify-center mt-0.5">
-                                            <input type="checkbox" id="paperless" name="paperless" class="peer sr-only" checked>
-                                            <div class="w-4 h-4 rounded-md border border-zinc-300 bg-white peer-checked:bg-zinc-900 peer-checked:border-zinc-900 transition-all shadow-sm group-hover:border-zinc-400"></div>
-                                            <iconify-icon icon="solar:check-read-linear" class="absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></iconify-icon>
-                                        </div>
-                                        <span class="text-sm text-zinc-700 select-none group-hover:text-zinc-900 transition-colors">Paperless Billing</span>
+                                    <label class="flex items-center gap-2 cursor-pointer group">
+                                        <input type="checkbox" id="paperless" name="paperless" checked class="w-4 h-4 rounded border-zinc-300 text-zinc-900 focus:ring-zinc-900">
+                                        <span class="text-xs text-zinc-700">Paperless Billing</span>
                                     </label>
 
-                                    <div class="space-y-1.5 pt-2 border-t border-zinc-100">
-                                        <label for="monthlyCharges" class="text-xs font-medium text-zinc-600 ml-0.5">Monthly Charges</label>
-                                        <div class="relative flex items-center">
-                                            <span class="absolute left-3.5 text-zinc-400 text-sm font-medium">₹</span>
-                                            <input type="number" id="monthlyCharges" name="monthlyCharges" min="500" max="15000" value="3000" step="100" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 pl-8 pr-3.5 py-2.5 text-sm text-zinc-900 outline-none hover:bg-zinc-50 focus:border-zinc-400 focus:bg-white focus:ring-4 focus:ring-zinc-100 transition-all">
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="space-y-1.5">
+                                            <label for="monthlyCharges" class="text-xs font-medium text-zinc-600 ml-0.5">Monthly Charges</label>
+                                            <div class="relative flex items-center">
+                                                <span class="absolute left-3.5 text-zinc-400 text-sm font-medium">₹</span>
+                                                <input type="number" id="monthlyCharges" name="monthlyCharges" value="2650" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 pl-8 pr-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                            </div>
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <label for="totalCharges" class="text-xs font-medium text-zinc-600 ml-0.5">Total Charges</label>
+                                            <div class="relative flex items-center">
+                                                <span class="absolute left-3.5 text-zinc-400 text-sm font-medium">₹</span>
+                                                <input type="number" id="totalCharges" name="totalCharges" value="127200" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 pl-8 pr-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                            </div>
                                         </div>
                                     </div>
-                                    
-                                    <div class="space-y-1.5 pt-1">
-                                        <label for="totalCharges" class="text-xs font-medium text-zinc-600 ml-0.5">Total Charges</label>
+
+                                    <div class="space-y-1.5">
+                                        <label for="paymentHistory" class="text-xs font-medium text-zinc-600 ml-0.5">Payment History</label>
+                                        <select id="paymentHistory" name="paymentHistory" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                            <option value="no_missed">No Missed Payments</option>
+                                            <option value="1_2_missed">1-2 Missed Payments</option>
+                                            <option value="gt_2_missed">>2 Missed Payments</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="space-y-1.5">
+                                            <label for="autoPay" class="text-xs font-medium text-zinc-600 ml-0.5">Auto Pay</label>
+                                            <select id="autoPay" name="autoPay" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                                <option value="no">No</option>
+                                                <option value="yes" selected>Yes</option>
+                                            </select>
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <label for="lastPaymentDate" class="text-xs font-medium text-zinc-600 ml-0.5">Last Payment Date</label>
+                                            <input type="date" id="lastPaymentDate" name="lastPaymentDate" value="2026-04-20" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-1.5">
+                                        <label for="outstandingBalance" class="text-xs font-medium text-zinc-600 ml-0.5">Outstanding Balance</label>
                                         <div class="relative flex items-center">
                                             <span class="absolute left-3.5 text-zinc-400 text-sm font-medium">₹</span>
-                                            <input type="number" id="totalCharges" name="totalCharges" min="0" max="200000" value="30000" step="1000" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 pl-8 pr-3.5 py-2.5 text-sm text-zinc-900 outline-none hover:bg-zinc-50 focus:border-zinc-400 focus:bg-white focus:ring-4 focus:ring-zinc-100 transition-all">
+                                            <input type="number" id="outstandingBalance" name="outstandingBalance" value="0" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 pl-8 pr-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Column 5: Engagement & Satisfaction -->
+                                <div class="space-y-6">
+                                    <div class="flex items-center gap-3 border-b border-zinc-100 pb-3">
+                                        <div class="w-6 h-6 rounded bg-zinc-100 flex items-center justify-center text-zinc-600">
+                                            <iconify-icon icon="solar:star-linear"></iconify-icon>
+                                        </div>
+                                        <h3 class="text-sm font-semibold text-zinc-900 tracking-tight">Engagement & Satisfaction</h3>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="space-y-1.5">
+                                            <label for="emailOpenRate" class="text-xs font-medium text-zinc-600 ml-0.5">Email Open Rate (%)</label>
+                                            <input type="number" id="emailOpenRate" name="emailOpenRate" value="62" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <label for="offerResponse" class="text-xs font-medium text-zinc-600 ml-0.5">Offer Response</label>
+                                            <select id="offerResponse" name="offerResponse" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                                <option value="responded">Responded</option>
+                                                <option value="ignored">Ignored</option>
+                                                <option value="unsubscribed">Unsubscribed</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="space-y-1.5">
+                                            <label for="satisfactionScore" class="text-xs font-medium text-zinc-600 ml-0.5">Satisfaction Score (1-5)</label>
+                                            <select id="satisfactionScore" name="satisfactionScore" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                                <option value="3">3</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="4">4</option>
+                                                <option value="5" selected>5</option>
+                                            </select>
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <label for="nps" class="text-xs font-medium text-zinc-600 ml-0.5">Net Promoter Score (NPS)</label>
+                                            <select id="nps" name="nps" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                                <option value="7">7</option>
+                                                <option value="0">0</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10" selected>10</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="space-y-1.5">
+                                            <label for="numComplaints" class="text-xs font-medium text-zinc-600 ml-0.5">Number of Complaints</label>
+                                            <input type="number" id="numComplaints" name="numComplaints" value="0" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <label for="supportTickets" class="text-xs font-medium text-zinc-600 ml-0.5">Support Tickets (3M)</label>
+                                            <input type="number" id="supportTickets" name="supportTickets" value="0" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-1.5">
+                                        <label for="loyaltyMember" class="text-xs font-medium text-zinc-600 ml-0.5">Loyalty Program Member</label>
+                                        <select id="loyaltyMember" name="loyaltyMember" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                            <option value="no">No</option>
+                                            <option value="yes" selected>Yes</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Column 6: Churn Indicators & Target -->
+                                <div class="space-y-6">
+                                    <div class="flex items-center gap-3 border-b border-zinc-100 pb-3">
+                                        <div class="w-6 h-6 rounded bg-zinc-100 flex items-center justify-center text-zinc-600">
+                                            <iconify-icon icon="solar:danger-circle-linear"></iconify-icon>
+                                        </div>
+                                        <h3 class="text-sm font-semibold text-zinc-900 tracking-tight">Churn Indicators</h3>
+                                    </div>
+
+                                    <div class="space-y-1.5">
+                                        <label for="daysSinceActivity" class="text-xs font-medium text-zinc-600 ml-0.5">Days Since Last Activity</label>
+                                        <input type="number" id="daysSinceActivity" name="daysSinceActivity" value="1" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                    </div>
+
+                                    <div class="space-y-1.5">
+                                        <label for="planDowngrade" class="text-xs font-medium text-zinc-600 ml-0.5">Plan Downgrade</label>
+                                        <select id="planDowngrade" name="planDowngrade" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                            <option value="no">No</option>
+                                            <option value="yes">Yes</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="space-y-1.5">
+                                        <label for="inactivityPeriod" class="text-xs font-medium text-zinc-600 ml-0.5">Inactivity Period (Days)</label>
+                                        <input type="number" id="inactivityPeriod" name="inactivityPeriod" value="0" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                    </div>
+
+                                    <div class="space-y-1.5">
+                                        <label for="competitorInteraction" class="text-xs font-medium text-zinc-600 ml-0.5">Competitor Interaction</label>
+                                        <select id="competitorInteraction" name="competitorInteraction" class="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                            <option value="no">No</option>
+                                            <option value="yes">Yes</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mt-8 p-6 bg-zinc-50 rounded-2xl border border-zinc-100 space-y-4">
+                                        <h4 class="text-xs font-bold text-zinc-900 uppercase tracking-widest">Target (To be Predicted)</h4>
+                                        <div class="space-y-1.5">
+                                            <label for="targetChurn" class="text-xs font-medium text-zinc-600 ml-0.5">Churn (Will the customer churn?)</label>
+                                            <select id="targetChurn" name="targetChurn" class="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2.5 text-sm text-zinc-900 outline-none transition-all">
+                                                <option value="unknown">-- Select --</option>
+                                                <option value="1">Yes = 1 (Customer will churn)</option>
+                                                <option value="0">No = 0 (Customer will stay)</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             
-                            <div class="pt-6 border-t border-zinc-100 flex justify-end">
-                                <button type="submit" class="bg-zinc-900 hover:bg-zinc-800 text-white px-6 py-2.5 rounded-xl text-sm font-medium transition-all focus:ring-4 focus:ring-zinc-900/10 outline-none flex items-center gap-2.5 shadow-md shadow-zinc-900/10 ring-1 ring-inset ring-zinc-900/20">
-                                    <iconify-icon icon="solar:calculator-linear" class="text-base"></iconify-icon> Run Prediction Model
+                            <div class="pt-10 border-t border-zinc-100 flex justify-end">
+                                <button type="submit" class="bg-zinc-900 hover:bg-zinc-800 text-white px-8 py-3 rounded-xl text-sm font-semibold transition-all focus:ring-4 focus:ring-zinc-900/10 outline-none flex items-center gap-3 shadow-lg shadow-zinc-900/20">
+                                    <iconify-icon icon="solar:play-circle-bold" class="text-xl"></iconify-icon> Run Prediction Model
                                 </button>
                             </div>
+
                         </form>
                     </div>
                 </div>
@@ -797,6 +1014,81 @@
         // Tab Navigation
         const navBtns = document.querySelectorAll('.nav-btn');
         const tabPanels = document.querySelectorAll('.tab-panel');
+        let analyticsLoaded = false;
+
+        async function loadAnalytics() {
+            if (analyticsLoaded) return;
+            try {
+                const response = await fetch('/analytics');
+                if (!response.ok) throw new Error('Failed to fetch');
+                const data = await response.json();
+                
+                console.log('Analytics data:', data);
+                
+                // Get all stat cards
+                const cards = document.querySelectorAll('#analytics .bg-white\/80 .text-3xl');
+                
+                // Card 0: Total Customers
+                if (cards[0]) cards[0].textContent = data.total_customers.toLocaleString();
+                
+                // Card 1: Churn Rate (has red-600 class)
+                if (cards[1]) cards[1].textContent = data.churn_rate + '%';
+                
+                // Card 2: Avg MRR
+                if (cards[2]) cards[2].textContent = '₹' + data.avg_monthly_revenue.toLocaleString();
+                
+                // Card 3: Customer Lifetime
+                if (cards[3]) {
+                    cards[3].innerHTML = data.customer_lifetime + '<span class="text-base text-zinc-400 font-medium ml-1 tracking-normal">mo</span>';
+                }
+                
+                // Update churn by service chart
+                const serviceContainer = document.querySelector('#analytics .space-y-5');
+                if (serviceContainer && data.churn_by_service && Object.keys(data.churn_by_service).length > 0) {
+                    let serviceHtml = '';
+                    for (const [service, rate] of Object.entries(data.churn_by_service)) {
+                        const displayName = service === 'Fiber optic' ? 'Fiber Optic' : service === 'No' ? 'No Internet' : service;
+                        serviceHtml += `
+                            <div>
+                                <div class="flex justify-between text-xs mb-2">
+                                    <span class="text-zinc-600 font-medium">${displayName}</span>
+                                    <span class="text-zinc-900 font-semibold">${rate}%</span>
+                                </div>
+                                <div class="w-full bg-zinc-100 rounded-full h-1 overflow-hidden">
+                                    <div class="bg-red-500 h-1 rounded-full" style="width: ${Math.min(rate, 100)}%"></div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    serviceContainer.innerHTML = serviceHtml;
+                }
+                
+                // Update churn by contract chart
+                const contractContainers = document.querySelectorAll('#analytics .space-y-5');
+                const contractContainer = contractContainers[1];
+                if (contractContainer && data.churn_by_contract && Object.keys(data.churn_by_contract).length > 0) {
+                    let contractHtml = '';
+                    for (const [contract, rate] of Object.entries(data.churn_by_contract)) {
+                        contractHtml += `
+                            <div>
+                                <div class="flex justify-between text-xs mb-2">
+                                    <span class="text-zinc-600 font-medium">${contract}</span>
+                                    <span class="text-zinc-900 font-semibold">${rate}%</span>
+                                </div>
+                                <div class="w-full bg-zinc-100 rounded-full h-1 overflow-hidden">
+                                    <div class="bg-red-500 h-1 rounded-full" style="width: ${Math.min(rate, 100)}%"></div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    contractContainer.innerHTML = contractHtml;
+                }
+                
+                analyticsLoaded = true;
+            } catch (error) {
+                console.error('Error loading analytics:', error);
+            }
+        }
 
         navBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -814,34 +1106,82 @@
                 const targetId = btn.getAttribute('data-target');
                 document.getElementById(targetId).classList.remove('hidden');
                 document.getElementById(targetId).classList.add('block');
+                
+                // Load analytics when Analytics tab is clicked
+                if (targetId === 'analytics') {
+                    loadAnalytics();
+                }
             });
         });
 
         // Form Logic
-        const tenureInput = document.getElementById('tenure');
-        const tenureValue = document.getElementById('tenureValue');
         const internetSelect = document.getElementById('internet');
-        const additionalServices = document.getElementById('additionalServices');
 
-        tenureInput.addEventListener('input', (e) => {
-            tenureValue.textContent = `${e.target.value} mo`;
-        });
+        function applyLowRiskDefaults() {
+            const defaults = {
+                gender: 'female',
+                senior: false,
+                partner: true,
+                dependents: true,
+                age: 42,
+                tenure: 48,
+                occupation: 'salaried',
+                income: 95000,
+                location: 'urban',
+                segment: 'premium',
+                phone: true,
+                multipleLines: 'yes',
+                internet: 'dsl',
+                onlineSecurity: 'yes',
+                techSupport: 'yes',
+                streamingTV: 'yes',
+                streamingMovies: 'yes',
+                deviceProtection: 'yes',
+                premiumSupport: 'yes',
+                dataUsage: 38,
+                minutesUsed: 420,
+                smsSent: 80,
+                avgCallDuration: 5.1,
+                serviceCalls: 0,
+                lastLogin: '3_days',
+                usageTrend: 'stable',
+                contract: 'twoyear',
+                payment: 'credit',
+                paperless: true,
+                monthlyCharges: 2650,
+                totalCharges: 127200,
+                paymentHistory: 'no_missed',
+                autoPay: 'yes',
+                lastPaymentDate: '2026-04-20',
+                outstandingBalance: 0,
+                emailOpenRate: 62,
+                offerResponse: 'responded',
+                satisfactionScore: '5',
+                nps: '10',
+                numComplaints: 0,
+                supportTickets: 0,
+                loyaltyMember: 'yes',
+                daysSinceActivity: 1,
+                planDowngrade: 'no',
+                inactivityPeriod: 0,
+                competitorInteraction: 'no',
+                targetChurn: '0'
+            };
 
-        internetSelect.addEventListener('change', (e) => {
-            if (e.target.value === 'no') {
-                additionalServices.classList.add('hidden');
-                const checkboxes = additionalServices.querySelectorAll('input[type="checkbox"]');
-                checkboxes.forEach(cb => cb.checked = false);
-            } else {
-                additionalServices.classList.remove('hidden');
-            }
-        });
+            Object.entries(defaults).forEach(([key, value]) => {
+                const el = document.getElementById(key);
+                if (!el) return;
+                if (el.type === 'checkbox') {
+                    el.checked = Boolean(value);
+                } else {
+                    el.value = value;
+                }
+            });
 
-        if (internetSelect.value === 'no') {
-            additionalServices.classList.add('hidden');
-        } else {
-            additionalServices.classList.remove('hidden');
+            document.getElementById('predictionResult').classList.add('hidden');
         }
+
+        applyLowRiskDefaults();
 
         // Prediction Submission
         document.getElementById('predictionForm').addEventListener('submit', async function(e) {
@@ -890,27 +1230,6 @@
                 submitBtn.disabled = false;
             }
         });
-
-        function calculateRiskScore(formData) {
-            let score = 0.3; 
-            
-            if (formData.get('contract') === 'monthly') score += 0.3;
-            else if (formData.get('contract') === 'yearly') score += 0.1;
-            
-            if (formData.get('internet') === 'fiber') score += 0.2;
-            
-            const tenure = parseInt(formData.get('tenure'));
-            if (tenure < 12) score += 0.2;
-            else if (tenure < 24) score += 0.1;
-            
-            const services = ['onlineSecurity', 'onlineBackup', 'deviceProtection', 'techSupport'];
-            const servicesCount = services.filter(service => formData.get(service)).length;
-            if (servicesCount === 0 && formData.get('internet') !== 'no') score += 0.15;
-            
-            if (formData.get('payment') === 'electronic') score += 0.1;
-            
-            return Math.min(Math.max(score, 0), 1);
-        }
 
         function displayPredictionResults(result) {
             const resultDiv = document.getElementById('predictionResult');
@@ -965,11 +1284,11 @@
             }
             
             // Display suggestions from API
-            const suggestions = result.suggestions;
+            const suggestions = [...(result.top_reasons || []), ...(result.suggestions || [])];
             suggestionsList.innerHTML = suggestions.map((s, i) => `
                 <div class="p-4 rounded-xl bg-zinc-50 border border-zinc-100 flex gap-4 transition-all duration-500 opacity-0 translate-y-2" style="animation: fadeUp 0.5s ease forwards ${i * 0.1}s">
                     <div class="w-8 h-8 rounded-lg bg-white border border-zinc-200 shadow-sm flex items-center justify-center flex-shrink-0">
-                        <iconify-icon icon="${s.icon}" class="text-lg ${s.colorClass}"></iconify-icon>
+                        <iconify-icon icon="${s.icon || 'solar:clipboard-list-linear'}" class="text-lg ${s.colorClass || 'text-zinc-700'}"></iconify-icon>
                     </div>
                     <div>
                         <h5 class="text-sm font-semibold text-zinc-900 mb-1">${s.title}</h5>
@@ -982,65 +1301,6 @@
             setTimeout(() => {
                 resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }, 50);
-        }
-
-        function generateSuggestions(riskScore, formData) {
-            const suggestions = [];
-            
-            if (riskScore > 0.7) {
-                if (formData.get('contract') === 'monthly') {
-                    suggestions.push({
-                        icon: 'solar:calendar-minimalistic-linear',
-                        colorClass: 'text-red-500',
-                        title: 'Restructure Agreement',
-                        description: 'High volatility detected. Deploy immediate 15% discount offer to lock in an annual commitment.'
-                    });
-                }
-                if (parseInt(formData.get('tenure')) < 12) {
-                    suggestions.push({
-                        icon: 'solar:phone-calling-linear',
-                        colorClass: 'text-amber-500',
-                        title: 'Executive Outreach',
-                        description: 'Account is failing to find value. Schedule an expedited CS call to audit onboarding process.'
-                    });
-                }
-            } else if (riskScore > 0.4) {
-                suggestions.push({
-                    icon: 'solar:chat-round-line-linear',
-                    colorClass: 'text-amber-500',
-                    title: 'Feedback Loop Initiation',
-                    description: 'Moderate risk indicators present. Trigger automated email sequence to gauge NPS and gather feedback.'
-                });
-            }
-            
-            if (formData.get('internet') === 'fiber' && !formData.get('techSupport')) {
-                suggestions.push({
-                    icon: 'solar:settings-minimalistic-linear',
-                    colorClass: 'text-zinc-700',
-                    title: 'Support Tier Upgrade',
-                    description: 'Fiber user lacks dedicated support. Offer 3 free months of premium support to reduce technical churn.'
-                });
-            }
-            
-            if (formData.get('payment') === 'electronic') {
-                suggestions.push({
-                    icon: 'solar:wallet-linear',
-                    colorClass: 'text-zinc-700',
-                    title: 'Automate Billing',
-                    description: 'Manual payment detected. Incentivize credit card auto-pay with a one-time structural account credit.'
-                });
-            }
-            
-            if(suggestions.length === 0) {
-                 suggestions.push({
-                    icon: 'solar:star-linear',
-                    colorClass: 'text-emerald-500',
-                    title: 'Maintain Relationship',
-                    description: 'Account metrics are optimal. Continue standard engagement rhythm and monitor for expansion signals.'
-                });
-            }
-            
-            return suggestions.slice(0, 3);
         }
 
         // Add custom animation for result items
