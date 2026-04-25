@@ -377,4 +377,4 @@ if __name__ == '__main__':
         shutil.copy('churn_prediction_ui.html', 'templates/index.html')
     
     # Run the app
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5050)
